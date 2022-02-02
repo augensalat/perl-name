@@ -1,6 +1,7 @@
 Revision history for name
 
 0.0.1   2022-02-02
+        - Add a .gitattributes file.
         - Add an .editorconfig file.
 
 0.0.0   2022-01-31

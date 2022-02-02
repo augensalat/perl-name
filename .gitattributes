@@ -1,0 +1,33 @@
+#
+# Documents
+#
+
+*.md       text diff=markdown
+
+
+#
+# Serialisation
+#
+
+*.yaml     text
+*.yml      text
+
+
+#
+# Exclude files from exporting
+#
+
+/.editorconfig  export-ignore
+/.gitattributes export-ignore
+/.github        export-ignore
+.gitignore      export-ignore
+.gitkeep        export-ignore
+
+
+#
+# Perl
+#
+
+# Source files
+*.pl text diff=perl
+*.pm text diff=perl
