@@ -1,95 +1,74 @@
 package name;
 
-use 5.006;
+use 5.008;
 use strict;
 use warnings;
 
+use Carp 'croak';
+use Sub::Util qw(set_prototype set_subname);
+
+our $VERSION = '0.0.0';
+
+sub import {
+    my $me = shift;
+    my $name = shift or croak "$me: no name given";
+    my %args = @_;
+    my $alias  = $args{alias}
+        or croak "$me: An 'alias' is required with 'use name'";
+    my $caller = caller;
+
+    no strict 'refs';
+    no warnings 'redefine';
+
+    *{"${caller}::$name"} =
+        set_subname "${caller}::$name",
+        set_prototype '',
+            sub {
+                return $alias;
+            };
+}
+
+1; # End of name
+
+__END__
+
 =head1 NAME
 
-name - The great new name!
+name
 
 =head1 VERSION
 
-Version 0.01
-
-=cut
-
-our $VERSION = '0.01';
-
+Version 0.0.0
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+  use name 'bonnie', alias => 'Bonnie Elizabeth Parker';
 
-Perhaps a little code snippet.
+  print bonnie;
 
-    use name;
+=head1 DESCRIPTION
 
-    my $foo = name->new();
-    ...
+C<use name> to get one.
 
 =head1 EXPORT
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+Whenever you C<use name> the first argument is the name of a subroutine that
+is exported into your namespace.
 
-=head1 SUBROUTINES/METHODS
+=head1 SUBROUTINES
 
-=head2 function1
+=head2 import
 
-=cut
-
-sub function1 {
-}
-
-=head2 function2
-
-=cut
-
-sub function2 {
-}
+This is called by L<use|perlfunc/use> and handles the C<name> arguments.
 
 =head1 AUTHOR
 
-Bernhard Graf, C<< <graf at cpan.org> >>
+Bernhard Graf
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-name at rt.cpan.org>, or through
-the web interface at L<https://rt.cpan.org/NoAuth/ReportBug.html?Queue=name>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
-
-
-
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc name
-
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker (report bugs here)
-
-L<https://rt.cpan.org/NoAuth/Bugs.html?Dist=name>
-
-=item * CPAN Ratings
-
-L<https://cpanratings.perl.org/d/name>
-
-=item * Search CPAN
-
-L<https://metacpan.org/release/name>
-
-=back
-
-
-=head1 ACKNOWLEDGEMENTS
-
+Please report any bugs or feature requests to
+L<https://github.com/augensalat/perl-name/issues>.
 
 =head1 LICENSE AND COPYRIGHT
 
@@ -99,7 +78,5 @@ This is free software, licensed under:
 
   The Artistic License 2.0 (GPL Compatible)
 
-
 =cut
 
-1; # End of name
