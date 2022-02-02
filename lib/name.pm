@@ -7,7 +7,7 @@ use warnings;
 use Carp 'croak';
 use Sub::Util qw(set_prototype set_subname);
 
-our $VERSION = '0.0.0';
+our $VERSION = 'v0.0.1';
 
 sub import {
     my $me = shift;
@@ -38,7 +38,7 @@ name
 
 =head1 VERSION
 
-Version 0.0.0
+Version v0.0.1
 
 =head1 SYNOPSIS
 
