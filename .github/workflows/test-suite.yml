@@ -1,0 +1,12 @@
+name: Test suite
+
+on:
+  - push
+
+jobs:
+
+  # Run test suite once on a recent Ubuntu Linux
+
+  test_simple:
+
+    uses: ./.github/workflows/test-simple.yml

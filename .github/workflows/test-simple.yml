@@ -1,0 +1,42 @@
+name: Test simple
+
+on:
+  workflow_call:
+
+jobs:
+
+  # System Perl on Ubuntu-latest
+  # must pass before diving into the Matrix
+
+  test_simple:
+
+    name: Linux System Perl (Ubuntu)
+    runs-on: ubuntu-latest
+
+    env:
+      PERL_USE_UNSAFE_INC: 0
+      AUTHOR_TESTING: 1
+      RELEASE_TESTING: 1
+      HARNESS_OPTIONS: j4
+
+    steps:
+
+      - name: Switch to branch
+        uses: actions/checkout@v2
+
+      - name: Perl version
+        run: perl -V
+
+      - name: Install dependencies
+        uses: perl-actions/install-with-cpm@stable
+        with:
+          install: |
+            Test::Fatal
+            Test::Pod
+            Test::Pod::Coverage
+
+      - name: Run tests
+        run: |
+          perl Makefile.PL
+          make
+          make test

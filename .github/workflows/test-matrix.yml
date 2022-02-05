@@ -1,53 +1,15 @@
-name: CI
+name: Test matrix
 
 on:
-  - push
+  workflow_call:
 
 jobs:
-
-  # System Perl on Ubuntu-latest
-  # must pass before diving into the Matrix
-
-  prelude:
-
-    name: Linux System Perl (Ubuntu)
-    runs-on: ubuntu-latest
-
-    env:
-      PERL_USE_UNSAFE_INC: 0
-      AUTHOR_TESTING: 1
-      RELEASE_TESTING: 1
-      HARNESS_OPTIONS: j4
-
-    steps:
-
-      - name: Switch to branch
-        uses: actions/checkout@v2
-
-      - name: Perl version
-        run: perl -V
-
-      - name: Install dependencies
-        uses: perl-actions/install-with-cpm@stable
-        with:
-          install: |
-            ExtUtils::MakeMaker
-            Sub::Util
-            Test::Fatal
-            Test::More
-
-      - name: Run tests
-        run: |
-          perl Makefile.PL
-          make
-          make test
 
   # Linux major Perl versions
 
   linux:
 
     name: Linux Perl v${{ matrix.perl-version }}
-    needs: prelude
     runs-on: ubuntu-latest
 
     strategy:
@@ -81,7 +43,7 @@ jobs:
         run: perl -V
 
       - name: Install dependencies
-        run: cpm install --show-build-log-on-failure ExtUtils::MakeMaker Sub::Util Test::Fatal Test::More
+        run: cpm install --show-build-log-on-failure Sub::Util Test::Fatal Test::More
 
       - name: Run tests
         run: |
@@ -89,8 +51,6 @@ jobs:
           make
           make test
         env:
-          AUTHOR_TESTING: 1
-          RELEASE_TESTING: 1
           HARNESS_OPTIONS: j4
 
   # macOS major Perl versions
@@ -98,7 +58,6 @@ jobs:
   macos:
 
     name: macOS Perl v${{ matrix.perl-version }}
-    needs: prelude
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -136,7 +95,7 @@ jobs:
         run: perl -V
 
       - name: Install dependencies
-        run: cpm install --show-build-log-on-failure ExtUtils::MakeMaker Sub::Util Test::Fatal Test::More
+        run: cpm install --show-build-log-on-failure Sub::Util Test::Fatal Test::More
 
       - name: Run tests
         run: |
@@ -144,8 +103,6 @@ jobs:
           make
           make test
         env:
-          AUTHOR_TESTING: 1
-          RELEASE_TESTING: 1
           HARNESS_OPTIONS: j4
 
   # Windows major Perl versions
@@ -153,7 +110,6 @@ jobs:
   windows:
 
     name: Windows Perl v${{ matrix.perl-version }}
-    needs: prelude
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -192,7 +148,7 @@ jobs:
         run: perl -V
 
       - name: Install dependencies
-        run: cpm install --show-build-log-on-failure ExtUtils::MakeMaker Sub::Util Test::Fatal Test::More
+        run: cpm install --show-build-log-on-failure Sub::Util Test::Fatal Test::More
 
       - name: Run tests
         run: |
@@ -200,6 +156,4 @@ jobs:
           make
           make test
         env:
-          AUTHOR_TESTING: 1
-          RELEASE_TESTING: 1
           HARNESS_OPTIONS: j4
