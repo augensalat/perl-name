@@ -34,7 +34,7 @@ __END__
 
 =head1 NAME
 
-name
+name - Take The Name
 
 =head1 VERSION
 
