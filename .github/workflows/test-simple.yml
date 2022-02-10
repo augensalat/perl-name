@@ -35,6 +35,7 @@ jobs:
             Test::Kwalitee
             Test::Pod
             Test::Pod::Coverage
+            Test::Synopsis
 
       - name: Run tests
         run: |
