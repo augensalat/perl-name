@@ -12,4 +12,3 @@ t/pod.t
 t/release.t
 t/synopsis.t
 t/use.t
-xt/boilerplate.t
