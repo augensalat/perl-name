@@ -1,7 +1,13 @@
 ^\.
 \.tar\.gz$
+^MANIFEST\.
 ^Makefile$
 ^MYMETA\.
 ^blib/
 ^pm_to_blib
 ^MakeMaker-\d
+~$
+\.bak$
+\.old$
+^#.*#$
+^\.#
