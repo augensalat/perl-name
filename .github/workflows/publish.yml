@@ -1,0 +1,53 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  # Run test suite once on a recent Ubuntu Linux
+
+  prelude:
+
+    uses: ./.github/workflows/test-simple.yml
+
+  # Run tests on all Perls on all OS
+
+  test_matrix:
+
+    needs: prelude
+    uses: ./.github/workflows/test-matrix.yml
+
+  # Upload to CPAN
+
+  publish:
+
+    name: Upload to CPAN
+    needs: test_matrix
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Switch to branch
+        uses: actions/checkout@v2
+
+      - name: Perl version
+        run: perl -V
+
+      - name: Build distribution archive
+        run: |
+          perl Makefile.PL
+          make
+          make dist
+
+      - name: Get dist archive filename
+        id: distname
+        run: echo -n "::set-output name=value::$(ls name-*.tar.gz)"
+
+      - name: Upload to CPAN
+        uses: augensalat/action-cpan-upload@v1
+        with:
+          filename: ${{ steps.distname.outputs.value }}
+          username: ${{ secrets.PAUSE_USERNAME }}
+          password: ${{ secrets.PAUSE_PASSWORD }}
+          dry_run: 0
